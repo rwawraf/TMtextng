@@ -720,7 +720,7 @@ namespace TMtextng
             }
         }
 
-        void ReadFontSettingsWindowButtons(IniData data)
+        public void ReadFontSettingsWindowButtons(IniData data)
         {
             foreach (SectionData section in data.Sections)
             {

@@ -35,7 +35,7 @@ namespace TMtextng.Konfig
             List<int> konifgButtons_TextVisible = new List<int>();
 
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 konfigButtons_Text.Add(iniReader.menuKonfigButtonsText[i]);
                 konfigButtons_ImageVisible.Add(iniReader.menuKonfigButtonsImageVisible[i]);

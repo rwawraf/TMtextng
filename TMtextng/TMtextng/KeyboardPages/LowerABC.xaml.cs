@@ -31,6 +31,7 @@ namespace TMtextng.KeyboardPages
         IniReader iniReader = new IniReader();
         public Button[] configureButton;
         public TextBlock[] configureButton_TextBlock;
+        public TextBlock[,] LowerABC_TextBlock;
         public TextBlock[] wordSuggestionButtons_TextBlock = new TextBlock[4];
         public Button[] wordSuggestionButtons = new Button[4];
         List<string> buttonLetter;
@@ -93,7 +94,7 @@ namespace TMtextng.KeyboardPages
             
             Viewbox[] configureButton_Viewbox = new Viewbox[iniReader.configureButton_count];
 
-            TextBlock[,] LowerABC_TextBlock = new TextBlock[4, 11];
+            LowerABC_TextBlock = new TextBlock[4, 11];
             Viewbox[,] LowerABC_Viewbox = new Viewbox[4, 11];
 
 

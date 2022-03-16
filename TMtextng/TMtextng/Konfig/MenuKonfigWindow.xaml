@@ -17,7 +17,7 @@
         <WrapPanel x:Name="wrapPanel" 
                        Grid.Row="0"
                        Margin="10" 
-                       Background="Black" 
+                       Background="Transparent" 
                        VerticalAlignment="Top" 
                        MinWidth="600" 
                        MinHeight="200" 

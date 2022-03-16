@@ -19,6 +19,8 @@ using System.Media;
 using System.ComponentModel;
 using System.Threading;
 using TMtextng.Voices;
+using System.Speech.Recognition;
+using System.Windows.Threading;
 
 namespace TMtextng
 {
@@ -31,6 +33,8 @@ namespace TMtextng
         public static extern void test();
         public string osk_path = "";
         public RedewendungDataBinding myNewText { get; set; }
+
+        static CancellationTokenSource cts = new CancellationTokenSource();
 
         public MainWindowViewModel()
         {
@@ -57,6 +61,94 @@ namespace TMtextng
         IniCreator iniCreator = new IniCreator();
         ScanningOptions scanningOptions = new ScanningOptions();
         bool cursorSelect_Choosen;
+        bool run;
+        int inf_loop_counter = 0;
+        static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            Console.WriteLine("Recognized text: " + e.Result.Text);
+            switch (e.Result.Text)
+            {
+                case "minimalisieren":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+                    });
+                    
+                    break;
+                case "maximieren":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Maximized;
+                        ((MainWindow)Application.Current.MainWindow).Activate();
+                    });
+
+                    break;
+                case "schließen":
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Process[] DesktopKeyboardProcess = Process.GetProcessesByName("osk");
+                        if (DesktopKeyboardProcess.Length > 0)
+                            DesktopKeyboardProcess[0].Kill();
+
+                        Application.Current.Shutdown();
+                    });
+                    
+                    break;
+                case "zurück":
+                    break;
+            }
+
+        }
+
+        static void recognizerAsync()
+        {
+            // Create an in-process speech recognizer for the de-DE locale.
+            using (
+            SpeechRecognitionEngine recognizer =
+             new SpeechRecognitionEngine(
+               new System.Globalization.CultureInfo("de-DE")))
+            {
+                
+                string[] choices = new string[] { "schließen", "maximieren", "minimalisieren", "zurück" };
+                Choices myChoices = new Choices(choices);
+
+                // Create and load a dictation grammar.  
+                Grammar myComannds = new Grammar(myChoices);
+                recognizer.LoadGrammarAsync(myComannds);
+                
+                // Add a handler for the speech recognized event.  
+                recognizer.SpeechRecognized +=
+                  new EventHandler<SpeechRecognizedEventArgs>(recognizer_SpeechRecognized);
+
+                // Configure input to the speech recognizer.  
+                recognizer.SetInputToDefaultAudioDevice();
+                recognizer.InitialSilenceTimeout = TimeSpan.FromSeconds(0.5);
+
+                // Start synchronousa speech recognition.
+                recognizer.Recognize();
+           
+            }
+            
+        }
+
+
+        async static void infLoopSpeechRecAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                while (true)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    await Task.Run(() => recognizerAsync());               
+
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine("Operation cancelled");
+
+            }
+        }
 
         public void ExecuteWriteSuggestedWord(object parameter)
         {
@@ -118,19 +210,152 @@ namespace TMtextng
                     break;
 
                 case "de/w":
-                    _ = ShowReadMenu();
+                    ShowReadMenu();
+                    ////RELOAD KEYBOARDPAGE////////////////////////////////////////////
+
+                    string mainWindowContentName = ((MainWindow)Application.Current.MainWindow).Content.ToString();
+
+                    switch (mainWindowContentName)
+                    {
+                        case "TMtextng.KeyboardPages.LowerABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerABC.globalLowerABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperABC.globalUpperABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.LowerQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerQWERTZ.globalLowerQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperQWERTZ.globalUpperQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.NumericKeyboard":
+                            Properties.Settings.Default.SavedText = KeyboardPages.NumericKeyboard.globalNumericKeyboard.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.NumericKeyboard();
+
+                            break;
+                    }
+
+                    ////UPDATE FONT SIZE//////////////////////////////////////////////////////////////////////////////////////////
                     break;
 
                 case "de/b":
-                    _ = ShowReadMenu();
+                    ShowReadMenu();
+                    ////RELOAD KEYBOARDPAGE////////////////////////////////////////////
+
+                     mainWindowContentName = ((MainWindow)Application.Current.MainWindow).Content.ToString();
+
+                    switch (mainWindowContentName)
+                    {
+                        case "TMtextng.KeyboardPages.LowerABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerABC.globalLowerABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperABC.globalUpperABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.LowerQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerQWERTZ.globalLowerQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperQWERTZ.globalUpperQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.NumericKeyboard":
+                            Properties.Settings.Default.SavedText = KeyboardPages.NumericKeyboard.globalNumericKeyboard.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.NumericKeyboard();
+
+                            break;
+                    }
+
+                    ////UPDATE FONT SIZE//////////////////////////////////////////////////////////////////////////////////////////
                     break;
 
                 case "de/s":
-                    _ = ShowReadMenu();
+                    ShowReadMenu(); 
+                    ////RELOAD KEYBOARDPAGE////////////////////////////////////////////
+
+                     mainWindowContentName = ((MainWindow)Application.Current.MainWindow).Content.ToString();
+
+                    switch (mainWindowContentName)
+                    {
+                        case "TMtextng.KeyboardPages.LowerABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerABC.globalLowerABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperABC":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperABC.globalUpperABC.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperABC();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.LowerQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.LowerQWERTZ.globalLowerQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.UpperQWERTZ":
+                            Properties.Settings.Default.SavedText = KeyboardPages.UpperQWERTZ.globalUpperQWERTZ.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperQWERTZ();
+
+                            break;
+
+                        case "TMtextng.KeyboardPages.NumericKeyboard":
+                            Properties.Settings.Default.SavedText = KeyboardPages.NumericKeyboard.globalNumericKeyboard.TextBoxContent.Text;
+                            ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.NumericKeyboard();
+
+                            break;
+                    }
+
+                    ////UPDATE FONT SIZE//////////////////////////////////////////////////////////////////////////////////////////
                     break;
 
                 case "Min":
                     ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+                    break;
+
+                case "SprachErke":
+                    if (inf_loop_counter == 0)
+                    {
+                        infLoopSpeechRecAsync(cts.Token);
+                        MessageBox.Show("Spracherkennung ein");
+                        inf_loop_counter = 1;
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Spracherkennung aus");
+                        inf_loop_counter = 0;
+                        cts.Cancel();
+                        cts.Dispose();
+                        cts = new CancellationTokenSource();
+                        
+                    }
                     break;
 
                 case "My":
@@ -837,13 +1062,15 @@ namespace TMtextng
             await Task.Run(() => window.ShowDialogAsync());
         }
 
-        private async Task ShowReadMenu()
+        private void ShowReadMenu()
         {
             ReadOptionsWindow window = new ReadOptionsWindow();
             window.Top = mainWindow.Top;
             window.Left = mainWindow.Left;
             mainWindow.Effect = blur;
-            await Task.Run(() => window.ShowDialogAsync());
+            //await Task.Run(() => window.ShowDialogAsync());
+            window.ShowDialog();
+            
             mainWindow.Effect = null;
         }
 

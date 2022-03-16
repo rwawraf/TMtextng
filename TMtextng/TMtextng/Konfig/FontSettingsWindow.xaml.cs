@@ -13,18 +13,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TMnote;
+using IniParser;
+using IniParser.Model;
 
 namespace TMtextng.Konfig
 {
+
     /// <summary>
     /// Interaction logic for TextSettings.xaml
     /// </summary>
     public partial class FontSettingsWindow : Window
     {
+        private string userIniPath;
         Label[] optionLabels = new Label[5];
         IniReader iniReader = new IniReader();
         static TextBox[] textBoxes = new TextBox[4];
         MainWindowViewModel buttonMVVM = new MainWindowViewModel();
+       
+        
         public FontSettingsWindow()
         {
             InitializeComponent();
@@ -237,6 +243,68 @@ namespace TMtextng.Konfig
         void buttonAction(object sender, EventArgs e, string commandParameter)
         {
             buttonMVVM.writeLetterCommand.Execute(commandParameter);
+
+            ////UPDATE FONT SIZE//////////////////////////////////////////////////////////////////////////////////////////
+            ////LOAD UPDATED FONT SETTINGS////////////////////////////////////////////
+            KeyboardPages.LowerABC.globalLowerABC.TextBoxContent.FontSize = iniReader.fontsizesValues[0] + 30;
+
+            for (int i = 0; i < 4; i++)
+            {
+                KeyboardPages.LowerABC.globalLowerABC.wordSuggestionButtons_TextBlock[i].FontSize = iniReader.fontsizesValues[2] + 30;
+            }
+
+            for (int i = 0; i < KeyboardPages.LowerABC.globalLowerABC.configureButton.Length; i++)
+            {
+                KeyboardPages.LowerABC.globalLowerABC.configureButton_TextBlock[i].FontSize = iniReader.fontsizesValues[1] + 30;
+            }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 11; j++)
+                {
+                    KeyboardPages.LowerABC.globalLowerABC.LowerABC_TextBlock[i, j].FontSize = iniReader.fontsizesValues[3] + 30;
+                }
+            }
+
+            ////RELOAD KEYBOARDPAGE////////////////////////////////////////////
+            
+            string mainWindowContentName = ((MainWindow)Application.Current.MainWindow).Content.ToString();
+
+            switch (mainWindowContentName)
+            {
+                case "TMtextng.KeyboardPages.LowerABC":
+                    Properties.Settings.Default.SavedText = KeyboardPages.LowerABC.globalLowerABC.TextBoxContent.Text;
+                    ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerABC();
+
+                    break;
+
+                case "TMtextng.KeyboardPages.UpperABC":
+                    Properties.Settings.Default.SavedText = KeyboardPages.UpperABC.globalUpperABC.TextBoxContent.Text;
+                    ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperABC();
+
+                    break;
+
+                case "TMtextng.KeyboardPages.LowerQWERTZ":
+                    Properties.Settings.Default.SavedText = KeyboardPages.LowerQWERTZ.globalLowerQWERTZ.TextBoxContent.Text;
+                    ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.LowerQWERTZ();
+
+                    break;
+
+                case "TMtextng.KeyboardPages.UpperQWERTZ":
+                    Properties.Settings.Default.SavedText = KeyboardPages.UpperQWERTZ.globalUpperQWERTZ.TextBoxContent.Text;
+                    ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.UpperQWERTZ();
+
+                    break;
+
+                case "TMtextng.KeyboardPages.NumericKeyboard":
+                    Properties.Settings.Default.SavedText = KeyboardPages.NumericKeyboard.globalNumericKeyboard.TextBoxContent.Text;
+                    ((MainWindow)Application.Current.MainWindow).Content = new KeyboardPages.NumericKeyboard();
+
+                    break;
+            }
+
+            ////UPDATE FONT SIZE//////////////////////////////////////////////////////////////////////////////////////////
         }
 
         public void TextBoxInput(object sender, TextCompositionEventArgs e)
