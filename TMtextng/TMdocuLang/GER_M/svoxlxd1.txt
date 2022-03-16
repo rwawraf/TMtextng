@@ -1,0 +1,25 @@
+! 
+! Deutsch Umsetzung TMND GmbH
+!
+XNPR web2outlook     'web-tu-aut-luk
+XNPR tmpush          'te-em-puSh
+XNPR gepushed        'ge-puSht
+XNPR tmspeak         'te-em-spik
+XNPR tmspeakdocu     'te-em-spik-doku
+XNPR email           'i-mej@l
+XNPR emails          'i-mej@ls
+XNPR notes           'nouts    
+XNPR exchange        'iks-tSendz 
+XNPR unix            'ju-niks
+XNPR pocketpc        'poket-pe:-tse:
+XNPR pocket          'poket
+XNPR wav             'wajf
+XNPR wave            'wajf
+XNPR polling         'pOling
+XNPR pollingin       'pOling-in
+XNPR pollingout      'pOling-au-t
+XNPR tmpollingout    'te-em-pOling-au-t
+XNPR tmpollingin     'te-em-pOling-in
+XNPR tmpolling       'te-em-pOling
+XNPR bittlmeier      'bi-tel-ma-jEr
+XNPR rock            'RO-k

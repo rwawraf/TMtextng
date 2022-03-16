@@ -1,0 +1,34 @@
+﻿<Window x:Class="TMtextng.Konfig.ReadOptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMtextng.Konfig"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+                Title="ReadOptionsWindow" Height="500" Width="700"
+        SizeChanged="FontSizeChange" >
+    <Grid x:Name="ReadOptionsGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <WrapPanel x:Name="wrapPanel"
+                   Grid.Row="0"
+                   Margin="10"
+                   Background="Black"
+                   VerticalAlignment="Top"
+                   MinWidth="600"
+                   MinHeight="200"
+                   HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="myCCCplace"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"/>
+        </Grid>
+    </Grid>
+</Window>

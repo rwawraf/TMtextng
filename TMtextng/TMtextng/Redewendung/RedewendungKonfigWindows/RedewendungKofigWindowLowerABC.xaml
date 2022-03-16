@@ -1,0 +1,54 @@
+﻿<Window x:Class="TMtextng.Redewendung.RedewendungKonfigWindowLowerABC"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMtextng.Redewendung"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="RedewendungKonfigWindowLowerABC" Height="800" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2.3*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2.3*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" x:Name="PropertiesSettingGrid" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid x:Name="ImageStackPnl"  >
+            </Grid>
+            <TextBlock  Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,0" 
+                        Text="Datei-Name:" FontSize="26"  VerticalAlignment="Top" />
+
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,45,0,0"
+                       Text="Text:" FontSize="26" VerticalAlignment="Top" />
+
+            <TextBox x:Name="DataNameTextBox" Grid.Column="1"
+                     Margin="165,5,30,140"  FontSize="26"  Height="50" Width="690" 
+                     MouseLeftButtonDown="DataNameTextBox_MouseLeftButtonDown"
+                     MaxLength="20"/>
+
+            <TextBox x:Name="RedewendungTextTextBox" Grid.Column="1" 
+                     Margin="165,65,30,10"  FontSize="20"   Height="130" Width="690" 
+                     Text="{Binding RedewendungText}" MouseLeftButtonDown="RedewendungTextTextBox_MouseLeftButtonDown"
+                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="LettersGrid"/>
+        <Grid Grid.Row="2">
+            <WrapPanel x:Name="wrapPanel" 
+                       Grid.Row="0"
+                       VerticalAlignment="Top" 
+                       MinWidth="800" 
+                       MinHeight="200" 
+                       HorizontalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>
+

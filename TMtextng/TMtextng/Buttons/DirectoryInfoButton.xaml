@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="TMtextng.Buttons.DirectoryInfoButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMtextng.Buttons"
+        mc:Ignorable="d"
+        Height="100"
+        Width="{Binding Path=BtnWidth}"
+        Margin="1" >
+    <Grid Background="{Binding Path=BtnBackground}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle x:Name="ImageRectangle" Stroke="White"  Grid.Column="0" RadiusX="20" RadiusY="20">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="{Binding Path=BtnImage}"/>
+            </Rectangle.Fill>
+        </Rectangle>
+
+            <TextBlock x:Name="ButtonTextBlock"
+                       Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="10,10,10,10"
+                       Text="{Binding Path=BtnText}"
+                       TextWrapping="Wrap"
+                       FontSize="25"
+                       FontFamily="Times New Roman"/>
+    </Grid>
+</UserControl>

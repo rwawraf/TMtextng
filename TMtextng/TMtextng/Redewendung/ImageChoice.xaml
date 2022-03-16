@@ -1,0 +1,28 @@
+﻿<Window x:Class="TMtextng.Redewendung.ImageChoice"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TMtextng.Redewendung"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="ImageChoice" Height="450" Width="850">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" x:Name="TextGrid">
+            <TextBlock Text="Wollen Sie ein Text- oder ein Bild-Symbol erstellen?" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <WrapPanel x:Name="wrapPanel" 
+                       Grid.Row="0"
+                       VerticalAlignment="Center" 
+                       MinWidth="800" 
+                       MinHeight="200" 
+                       HorizontalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>

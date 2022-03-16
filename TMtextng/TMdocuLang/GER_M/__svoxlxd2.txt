@@ -1,0 +1,51 @@
+! 
+! Deutsch Umsetzung TMND GmbH
+!
+XNPR a    'a-
+XNPR aaa  'a:
+XNPR ä    'E:
+XNPR by   'b-
+XNPR byy  'b-y
+XNPR ch   'C
+XNPR c2   'x
+XNPR cy   'C-
+XNPR cc   'CC-
+XNPR dy   'd-
+XNPR dd   'dd-
+XNPR fy   'f-
+XNPR gy   'g:
+XNPR gg   'gg-
+XNPR gxy  'g-
+XNPR hy   'h-y
+XNPR hi   'h:
+XNPR hh   'hh-
+XNPR hyy  'h6
+XNPR ji   'j:-
+XNPR ky   'ky
+XNPR kk   'k-
+XNPR ly   'l:-
+XNPR lyy  'ly
+XNPR my   'm-
+XNPR myy  'm:-
+XNPR ny   'n-
+XNPR nyy  'ny-
+XNPR ng   'ng-
+XNPR ngg  'N-
+XNPR ngy  'N:g-
+XNPR py   'p-y
+XNPR pyy  'p:-
+XNPR ry   'r-
+XNPR rr   'rr-
+XNPR ryy  'r:-
+XNPR sss  's-
+XNPR sch  'S-
+XNPR ty   'ty-
+XNPR ts   'ts-
+XNPR tyy  't-
+! XNPR vy   'fi-
+XNPR vy   'fy
+XNPR vv   'vv-
+XNPR vyy  'W-
+XNPR wy   'wy
+XNPR ww   'ww-
+XNPR wyy  'W-
