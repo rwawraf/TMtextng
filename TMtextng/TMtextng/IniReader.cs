@@ -6,14 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 
 namespace TMtextng
 {
     class IniReader
     {
+
+        static CancellationTokenSource cts = new CancellationTokenSource();
+
+
         public int svox_voice_active;
         public int keyboard_active;
         public int readPressedButtonTextMode_active;
+        public int speechRecMode;
 
         public int GerW_active;
         public int GerM_active;
@@ -56,6 +62,7 @@ namespace TMtextng
         public string scanningInterval;
         public string selectedLanguage;
         public string textReadMode;
+        
 
         //Buttons import count 
         public int configureButton_count;
@@ -173,7 +180,7 @@ namespace TMtextng
         public List<string> redewendungabcButtonLetter = new List<string>();
         public List<string> redewendungABCButtonLetter = new List<string>();
 
-
+        public static int spech_rec_counter = 0;
 
         public IniReader()
         {
@@ -212,6 +219,7 @@ namespace TMtextng
 
             keyboard_active = int.Parse(userData["User"]["Keyboard_active"]);
             readPressedButtonTextMode_active = int.Parse(userData["User"]["ReadPressedButtonTextMode_active"]);
+            
 
 
             configureButton_count = 0;
@@ -282,6 +290,7 @@ namespace TMtextng
             ReadButtonColorRGB(data);
             ReadSvoxVoiceSettings(userData, validationCount);
             GetTextReadMode(userData);
+            GetSpeechRecMode(userData);
             ReadSvoxVoiceActive(userData);
             ReadKeyButtonImageVisibility(data);
             ReadKeyButtonImagePath(data);
@@ -356,6 +365,38 @@ namespace TMtextng
         public void GetTextReadMode(IniData data)
         {
             textReadMode = data["User"]["textReadMode"];
+        }
+        public void GetSpeechRecMode(IniData data)
+        {
+            
+            speechRecMode = int.Parse(data["User"]["speechRecMode"]);
+            
+            //check if speech rec is "ON" on app start only once
+            if (spech_rec_counter == 0)
+            {
+                if (speechRecMode == 1)
+                {
+                    Konfig.MenuKonfigWindow.infLoopSpeechRecAsync(Konfig.MenuKonfigWindow.cts.Token);
+                }
+                else
+                {
+
+                    try
+                    {
+                        Konfig.MenuKonfigWindow.cts.Cancel();
+                        Konfig.MenuKonfigWindow.cts.Dispose();
+                        Konfig.MenuKonfigWindow.cts = new CancellationTokenSource();
+                    }
+                    catch (Exception)
+                    {
+
+                        //speech rec allready running on app start, catch if the user cancells it in the konfig app menu
+                    }
+
+                }
+                spech_rec_counter++;
+            }
+
         }
         public void ReadSvoxVoiceSettings(IniData data, int validationCount)
         {

@@ -19,7 +19,6 @@ using System.Media;
 using System.ComponentModel;
 using System.Threading;
 using TMtextng.Voices;
-using System.Speech.Recognition;
 using System.Windows.Threading;
 
 namespace TMtextng
@@ -33,8 +32,6 @@ namespace TMtextng
         public static extern void test();
         public string osk_path = "";
         public RedewendungDataBinding myNewText { get; set; }
-
-        static CancellationTokenSource cts = new CancellationTokenSource();
 
         public MainWindowViewModel()
         {
@@ -61,94 +58,6 @@ namespace TMtextng
         IniCreator iniCreator = new IniCreator();
         ScanningOptions scanningOptions = new ScanningOptions();
         bool cursorSelect_Choosen;
-        bool run;
-        int inf_loop_counter = 0;
-        static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
-        {
-            Console.WriteLine("Recognized text: " + e.Result.Text);
-            switch (e.Result.Text)
-            {
-                case "minimalisieren":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
-                    });
-                    
-                    break;
-                case "maximieren":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Maximized;
-                        ((MainWindow)Application.Current.MainWindow).Activate();
-                    });
-
-                    break;
-                case "schließen":
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        Process[] DesktopKeyboardProcess = Process.GetProcessesByName("osk");
-                        if (DesktopKeyboardProcess.Length > 0)
-                            DesktopKeyboardProcess[0].Kill();
-
-                        Application.Current.Shutdown();
-                    });
-                    
-                    break;
-                case "zurück":
-                    break;
-            }
-
-        }
-
-        static void recognizerAsync()
-        {
-            // Create an in-process speech recognizer for the de-DE locale.
-            using (
-            SpeechRecognitionEngine recognizer =
-             new SpeechRecognitionEngine(
-               new System.Globalization.CultureInfo("de-DE")))
-            {
-                
-                string[] choices = new string[] { "schließen", "maximieren", "minimalisieren", "zurück" };
-                Choices myChoices = new Choices(choices);
-
-                // Create and load a dictation grammar.  
-                Grammar myComannds = new Grammar(myChoices);
-                recognizer.LoadGrammarAsync(myComannds);
-                
-                // Add a handler for the speech recognized event.  
-                recognizer.SpeechRecognized +=
-                  new EventHandler<SpeechRecognizedEventArgs>(recognizer_SpeechRecognized);
-
-                // Configure input to the speech recognizer.  
-                recognizer.SetInputToDefaultAudioDevice();
-                recognizer.InitialSilenceTimeout = TimeSpan.FromSeconds(0.5);
-
-                // Start synchronousa speech recognition.
-                recognizer.Recognize();
-           
-            }
-            
-        }
-
-
-        async static void infLoopSpeechRecAsync(CancellationToken cancellationToken)
-        {
-            try
-            {
-                while (true)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    await Task.Run(() => recognizerAsync());               
-
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                Console.WriteLine("Operation cancelled");
-
-            }
-        }
 
         public void ExecuteWriteSuggestedWord(object parameter)
         {
@@ -339,23 +248,8 @@ namespace TMtextng
                     ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
                     break;
 
-                case "SprachErke":
-                    if (inf_loop_counter == 0)
-                    {
-                        infLoopSpeechRecAsync(cts.Token);
-                        MessageBox.Show("Spracherkennung ein");
-                        inf_loop_counter = 1;
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("Spracherkennung aus");
-                        inf_loop_counter = 0;
-                        cts.Cancel();
-                        cts.Dispose();
-                        cts = new CancellationTokenSource();
-                        
-                    }
+                case "Sprache Erkennung":
+                    ReturToPreviousWindow();
                     break;
 
                 case "My":
@@ -513,6 +407,7 @@ namespace TMtextng
                 case "Timeout-Interval":
                     scanningOptions.SetScanningInterval("Timeout-Interval", "Ziklusinterval", "1", "2");
                     break;
+
 
                 case "Konfg":
                     _ = ShowKonfigMenu();
@@ -1278,7 +1173,6 @@ namespace TMtextng
         private void ReturToPreviousWindow()
         {
             var window = Application.Current.Windows.OfType<Window>().SingleOrDefault(w => w.IsActive);
-            
             switch (window.Title)
             {
                 case "ReadOptionsWindow":

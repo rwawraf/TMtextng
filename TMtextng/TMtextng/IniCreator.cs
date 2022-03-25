@@ -46,7 +46,7 @@ namespace TMtextng
             parsedINIDataToSave["User"].AddKey("Lang - NedW - on - off", "1");
             parsedINIDataToSave["User"].AddKey("Lang - PorW - on - off", "1");
             parsedINIDataToSave["User"].AddKey("Lang - SpaW - on - off", "1");
-
+            parsedINIDataToSave["User"].AddKey("SpeechRec", "0");
 
             parser.WriteFile("TMtextng_config_user.ini", parsedINIDataToSave);
         }
