@@ -62,7 +62,7 @@ namespace TMtextng
         public string scanningInterval;
         public string selectedLanguage;
         public string textReadMode;
-        
+        public int controlPanelSize;
 
         //Buttons import count 
         public int configureButton_count;
@@ -291,6 +291,7 @@ namespace TMtextng
             ReadSvoxVoiceSettings(userData, validationCount);
             GetTextReadMode(userData);
             GetSpeechRecMode(userData);
+            GetControlPanelSize(userData);
             ReadSvoxVoiceActive(userData);
             ReadKeyButtonImageVisibility(data);
             ReadKeyButtonImagePath(data);
@@ -365,6 +366,11 @@ namespace TMtextng
         public void GetTextReadMode(IniData data)
         {
             textReadMode = data["User"]["textReadMode"];
+        }
+
+        public void GetControlPanelSize(IniData data)
+        {
+            controlPanelSize = int.Parse(data["User"]["Control_panel_size"]);
         }
         public void GetSpeechRecMode(IniData data)
         {

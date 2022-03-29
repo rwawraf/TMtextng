@@ -44,6 +44,7 @@ namespace TMtextng.KeyboardPages
             {
                 LowerQWERTZgrid.RowDefinitions.RemoveAt(LowerQWERTZgrid.RowDefinitions.Count - 1);
                 LowerQWERTZgrid.Children.RemoveAt(LowerQWERTZgrid.Children.Count - 1);
+                ControlPanel.Height = new GridLength(iniReader.controlPanelSize);
             }
 
             TextBoxContent.FontSize = iniReader.fontsizesValues[0] + 30;

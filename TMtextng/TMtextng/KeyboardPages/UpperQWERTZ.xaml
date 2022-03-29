@@ -12,7 +12,7 @@
     <Grid x:Name="UpperQWERTZgrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" x:Name="ControlPanel"/>
             <RowDefinition Height="2*" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
