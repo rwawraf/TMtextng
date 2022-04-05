@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Threading;
 
 namespace TMtextng
 {
@@ -46,7 +47,9 @@ namespace TMtextng
 
     public partial class App : Application
     {
-        PathChecker pathCheck = new PathChecker();       
+        PathChecker pathCheck = new PathChecker();
+        private static Mutex _mutex = null;
+        
         protected override void OnStartup(StartupEventArgs e)
         {          
             pathCheck.CreateHardLinkToIniFile();
@@ -76,7 +79,20 @@ namespace TMtextng
             if (iniReader.svox_voice_active == 1)
             {
                 SpeakVoice.Init_SVOX();
-            }              
+            }
+
+            const string appName = "TMtextneu";
+            bool createdNew;
+
+            _mutex = new Mutex(true, appName, out createdNew);
+
+            if (!createdNew)
+            {
+                //app is already running! Exiting the application
+                Application.Current.Shutdown();
+            }
+
+            base.OnStartup(e);
         }
     }
 }
